@@ -8,7 +8,7 @@ dotenv.config(); // Load environment variables from .env file
 const PORT = process.env.PORT || 3000; // Use 3000 as default if PORT is not defined
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://hackers-path.vercel.app',
 }));
 
 app.use(express.json({ limit: '50mb' })); // Use express.json() middleware with limit
