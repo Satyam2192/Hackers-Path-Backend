@@ -15,17 +15,16 @@ WEBSITE
 
 
 # Folder Structure
-`    server/
-        config/
-            database.js
-        Controlers/
-            Auth.js
-        middleweres/
-            auth.js
-        models/
-            user.js
-            modules.js
-        routes/
-            user.js
-        index.js
-`
+server/
+   config/
+       database.js
+   Controlers/
+       Auth.js
+   middleweres/
+       auth.js
+   models/
+       user.js
+       modules.js
+   routes/
+       user.js
+   index.js
