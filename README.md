@@ -1,4 +1,4 @@
-#### Hackers Path 
+# Hackers Path 
 
 a learning website,
 -> various learning path
@@ -15,6 +15,7 @@ WEBSITE
 
 
 # Folder Structure
+```
 server/
    config/
        database.js
@@ -28,3 +29,4 @@ server/
    routes/
        user.js
    index.js
+```
