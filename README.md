@@ -1,6 +1,6 @@
 ## Frontend Deployed At: [VERCEL](https://hackers-path.vercel.app)
 #### Frontend Repository: [GITHUB](https://github.com/Satyam2192/Hackers-Path/)
-#### Backend Deployed At: [RENDER](https://sk-hackers-path.onrender.com) || [POSTMAN](https://documenter.getpostman.com/view/31555061/2s9YsRaTXV)
+#### Backend Deployed At: [RENDER](https://sk-hackers-path.onrender.com/api/v1/modules) || [POSTMAN](https://documenter.getpostman.com/view/31555061/2s9YsRaTXV)
 
 # Hackers Path 
 
