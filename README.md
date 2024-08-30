@@ -18,19 +18,10 @@ WEBSITE
 #5 Viewrs and student can learn and read path and modules and keep track of their progress
 
 
-# Folder Structure
-```
-server/
-   config/
-       database.js
-   Controlers/
-       Auth.js
-   middleweres/
-       auth.js
-   models/
-       user.js
-       modules.js
-   routes/
-       user.js
-   index.js
-```
+## GET Modules:
+Request URL: Make requests to /api/v1/modules with optional query parameters page and limit.
+Example:
+/api/v1/modules (gets the first 5 modules)
+/api/v1/modules?page=2 (gets the second page of 5 modules)
+/api/v1/modules?limit=10 (gets the first 10 modules)
+/api/v1/modules?page=3&limit=10 (gets the third page of 10 modules)

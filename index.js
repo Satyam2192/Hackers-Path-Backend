@@ -1,29 +1,47 @@
 const express = require("express");
-const app = express();
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
-dotenv.config(); // Load environment variables from .env file
+const mongoose = require("mongoose");
 
-const PORT = process.env.PORT || 3000; // Use 3000 as default if PORT is not defined
+dotenv.config(); 
+
+const PORT = process.env.PORT || 3000; 
+
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => { console.log("db connected successfully") })
+  .catch((err) => {
+    console.log("err in connecting to database");
+    console.log(err);
+    process.exit(1);
+
+  });
+
+// const __dirname = path.resolve();
+
+const app = express();
 
 app.use(cors({
   origin: '*',
 }));
 
-app.use(express.json({ limit: '50mb' })); // Use express.json() middleware with limit
+app.use(express.json({ limit: '50mb' })); 
 app.use(cookieParser());
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
-require("./config/database").connect();
 
 // Routes import and mount
-const user = require("./routes/user");
-const modules = require("./routes/modules");
+const authRouter = require('./routes/auth.routes');
+const userRouter = require('./routes/user');
+const moduleRouter = require("./routes/modules");
 
-app.use("/api/v1", user);
-app.use("/api/v1", modules); // Mount the modules route
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use("/api/v1/modules", moduleRouter); 
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+

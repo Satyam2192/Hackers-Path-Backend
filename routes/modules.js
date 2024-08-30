@@ -1,20 +1,35 @@
 const express = require("express");
 const router = express.Router();
 const { auth, isAdmin } = require("../middlewares/auth");
-const Module = require("../models/modules");
+const Module = require("../models/module.model.js");
 
-// GET all modules
-router.get("/modules", async (req, res) => {
+// GET all modules with pagination
+router.get("/", async (req, res) => {
   try {
-    const modules = await Module.find();
-    res.json(modules);
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 15; 
+
+    const skip = (page - 1) * limit; 
+
+    const modules = await Module.find()
+      .skip(skip)
+      .limit(limit);
+
+    const totalModules = await Module.countDocuments(); 
+
+    res.json({
+      success: true,
+      modules,
+      currentPage: page,
+      totalPages: Math.ceil(totalModules / limit),
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
 // GET a specific module by ID
-router.get("/modules/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const module = await Module.findById(req.params.id);
     if (!module) {
@@ -27,7 +42,7 @@ router.get("/modules/:id", async (req, res) => {
 });
 
 // POST a new module
-router.post("/modules", auth, isAdmin, async (req, res) => {
+router.post("/", auth, isAdmin, async (req, res) => {
   try {
     const module = new Module(req.body);
     await module.save();
@@ -38,7 +53,7 @@ router.post("/modules", auth, isAdmin, async (req, res) => {
 });
 
 // PUT/update a module by ID
-router.put("/modules/:id", auth, isAdmin, async (req, res) => {
+router.put("/:id", auth, isAdmin, async (req, res) => {
   try {
     const module = await Module.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -53,7 +68,7 @@ router.put("/modules/:id", auth, isAdmin, async (req, res) => {
 });
 
 // DELETE a module by ID
-router.delete("/modules/:id", auth, isAdmin, async (req, res) => {
+router.delete("/:id", auth, isAdmin, async (req, res) => {
   try {
     const module = await Module.findByIdAndDelete(req.params.id);
     if (!module) {

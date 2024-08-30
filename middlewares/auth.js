@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 
-exports.auth = (req,res,next)=>{
+module.exports.auth = (req,res,next)=>{
     try{
         //extract jwt token
         //PENDING:other ways to fetch token (total 3 ways 1->req.body.token , 2->req.cookie.token, 3->pending)
@@ -44,7 +44,7 @@ exports.auth = (req,res,next)=>{
     }
 }
 
-exports.isStudent = (req,res,next) =>{
+module.exports.isStudent = (req,res,next) =>{
     try {
         if(req.user.role !== "Student"){
             return res.status(401).json({
@@ -62,7 +62,7 @@ exports.isStudent = (req,res,next) =>{
     
 }
 
-exports.isAdmin = (req,res,next) =>{
+module.exports.isAdmin = (req,res,next) =>{
     try {
         if(req.user.role !== "Admin"){
             return res.status(401).json({
