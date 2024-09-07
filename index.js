@@ -40,7 +40,7 @@ const authRouter = require('./routes/auth.routes');
 const userRouter = require('./routes/user');
 const moduleRouter = require("./routes/modules");
 
-app.use('/api/v1/auth', authRouter);
+app.use('/api/v1', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use("/api/v1/modules", moduleRouter); 
 
