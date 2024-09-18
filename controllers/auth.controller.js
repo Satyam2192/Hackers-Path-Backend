@@ -27,7 +27,7 @@ const signup = async (req, res, next) => {
         });
 
         if (existingUser) {
-            return res.status(409).json('User already exists');
+            return res.status(400).json('User already exists');
         }
 
         const hashedPassword = bcryptjs.hashSync(password, 10);
