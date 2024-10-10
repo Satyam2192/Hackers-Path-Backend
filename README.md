@@ -1,27 +1,94 @@
-## Frontend Deployed At: [VERCEL](https://hackers-path.vercel.app)
-#### Frontend Repository: [GITHUB](https://github.com/Satyam2192/Hackers-Path/)
-#### Backend Deployed At: [RENDER](https://sk-hackers-path.onrender.com/api/v1/modules) || [POSTMAN](https://documenter.getpostman.com/view/31555061/2s9YsRaTXV)
+# Cryptocurrency Data API
 
-# Hackers Path 
+This API provides endpoints to fetch cryptocurrency data and calculate price deviations.
 
-a learning website,
--> various learning path
--> For each path Variouls Learning Modules will be there
+## Base URL
 
-AUTH
-#1 isAdmin and isStudent
-#2 Student can register with Email, Username, Password, Conform passowrd and Login with username Or email and passowrd
+```
+http://localhost:7000
+```
 
-WEBSITE
-#3 Admin-have track and progress of all students, And Student have track and progress of itself only.
-#4 Admin can add Path, and for each path there is a corresponding learning modules and all activity of admin is done on Admin dashboard
-#5 Viewrs and student can learn and read path and modules and keep track of their progress
+## Endpoints
 
+### 1. Get Cryptocurrency Stats
 
-## GET Modules:
-Request URL: Make requests to /api/v1/modules with optional query parameters page and limit.
-Example:
-/api/v1/modules (gets the first 5 modules)
-/api/v1/modules?page=2 (gets the second page of 5 modules)
-/api/v1/modules?limit=10 (gets the first 10 modules)
-/api/v1/modules?page=3&limit=10 (gets the third page of 10 modules)
+Fetches the latest cryptocurrency data for a specific coin.
+
+- **URL:** `/stats`
+- **Method:** GET
+- **Query Parameters:**
+  - `coin` (required): The name of the cryptocurrency (e.g., bitcoin, ethereum, matic-network)
+
+#### Sample Request
+
+```
+GET /stats?coin=bitcoin
+```
+
+#### Sample Response
+
+```json
+{
+  "price": 50000,
+  "marketCap": 1000000000000,
+  "24hChange": 2.5
+}
+```
+
+### 2. Get Price Deviation
+
+Calculates the standard deviation of the last 100 price records for a specific coin.
+
+- **URL:** `/deviation`
+- **Method:** GET
+- **Query Parameters:**
+  - `coin` (required): The name of the cryptocurrency (e.g., bitcoin, ethereum, matic-network)
+
+#### Sample Request
+
+```
+GET /deviation?coin=ethereum
+```
+
+#### Sample Response
+
+```json
+{
+  "deviation": 150.25
+}
+```
+
+## Error Handling
+
+The API returns appropriate HTTP status codes and error messages in case of failures.
+
+- 404: Data not found for the specified coin
+- 500: Internal server error
+
+## Data Update
+
+Cryptocurrency data is fetched and stored every 2 hours using a cron job.
+
+## Environment Variables
+
+The following environment variables need to be set:
+
+- `PORT`: The port on which the server will run (default: 7000)
+- `MONGODB_URL`: MongoDB connection string
+- `COINGECKO_API_KEY`: API key for CoinGecko
+
+## Running the Server
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Set up environment variables in a `.env` file
+
+3. Start the server:
+   ```
+   npm start
+   ```
+
+The server will start running on the specified port (default: 7000).

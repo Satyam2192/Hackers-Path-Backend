@@ -1,47 +1,44 @@
 const express = require("express");
-const dotenv = require('dotenv');
-const cors = require('cors');
+const dotenv = require("dotenv");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const cron = require("node-cron");
 
-dotenv.config(); 
+// Routes Import
+const statsRoute = require("./routes/stats.routes");
+const deviationRoute = require("./routes/deviation.routes");
+const fetchAndStoreCryptoData = require("./jobs/fetchCryptoData.job");
 
-const PORT = process.env.PORT || 3000; 
+dotenv.config();
 
+const PORT = process.env.PORT || 7000;
+const app = express();
+
+// Database connection
+mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => { console.log("db connected successfully") })
+  .then(() => { console.log("db connected successfully"); })
   .catch((err) => {
-    console.log("err in connecting to database");
-    console.log(err);
+    console.log("err in connecting to database", err);
     process.exit(1);
-
   });
 
-// const __dirname = path.resolve();
-
-const app = express();
-
-app.use(cors({
-  origin: '*',
-}));
-
-app.use(express.json({ limit: '50mb' })); 
+// Middleware
+app.use(cors({ origin: '*' }));
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
+
+// Routes Mount
+app.use("/stats", statsRoute);
+app.use("/deviation", deviationRoute);
+
+// job to run every 2 hours
+cron.schedule("0 */2 * * *", fetchAndStoreCryptoData); 
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
-// Routes import and mount
-const authRouter = require('./routes/auth.routes');
-const userRouter = require('./routes/user');
-const moduleRouter = require("./routes/modules");
-
-app.use('/api/v1', authRouter);
-app.use('/api/v1/users', userRouter);
-app.use("/api/v1/modules", moduleRouter); 
-
-
